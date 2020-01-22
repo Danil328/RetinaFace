@@ -25,7 +25,7 @@ def get_version(*args):
 
 setup(
     name='retinaface',
-    version=get_version('rcnn', '__init__.py'),
+    version=get_version('retinaface', '__init__.py'),
     author='Akhmetov Danil',
     author_email='danil28644@gmail.com',
     description='RetinaFace',
@@ -33,7 +33,7 @@ setup(
     url='https://github.com/Danil328/Pytorch_Retinaface.git',
     packages=find_packages(),
     install_requires=[
-        'torchvision', 'torch>=1.1', "gdown"
+        "gdown"
     ],
     setup_requires=['pytest-runner'],
     python_requires='>=3.6.0'
