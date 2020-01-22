@@ -12,11 +12,13 @@ class FaceDetector(object):
                  gpuid: int = -1, padding: float = 0.2, flip: bool = False, scales=None):
 
         if scales is None:
-            scales = [1.0]
+            scales = [1024, 1980]
         self.threshold = threshold
         self.padding = padding
         self.flip = flip
         self.scales = scales
+        self.target_size = scales[0]
+        self.max_size = scales[1]
 
         if 'http' in weights:
             weights = self.download_weights(weights)
@@ -31,7 +33,19 @@ class FaceDetector(object):
         return "./weights/R50"
 
     def get_faces(self, image: np.ndarray) -> List[np.ndarray]:
+        im_shape = image.shape
+        im_size_min = np.min(im_shape[0:2])
+        im_size_max = np.max(im_shape[0:2])
+        im_scale = float(self.target_size) / float(im_size_min)
+
+        if np.round(im_scale * im_size_max) > self.max_size:
+            im_scale = float(self.max_size) / float(im_size_max)
+
+        scales = [im_scale]
+
+        print(scales)
         faces, landmarks = self.detector.detect(image, self.threshold, scales=self.scales, do_flip=self.flip)
+
         crops = []
         if faces is not None:
             for i in range(faces.shape[0]):
