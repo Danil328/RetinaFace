@@ -42,9 +42,7 @@ class FaceDetector(object):
             im_scale = float(self.max_size) / float(im_size_max)
 
         scales = [im_scale]
-
-        print(scales)
-        faces, landmarks = self.detector.detect(image, self.threshold, scales=self.scales, do_flip=self.flip)
+        faces, landmarks = self.detector.detect(image, self.threshold, scales=scales, do_flip=self.flip)
 
         crops = []
         if faces is not None:
