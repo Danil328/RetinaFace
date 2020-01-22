@@ -1,8 +1,11 @@
 import codecs
 import os
 import re
+import subprocess
+import sys
 
 from setuptools import find_packages, setup
+from setuptools.command.build_py import build_py
 
 
 def get_absolute_path(*args):
@@ -23,6 +26,15 @@ def get_version(*args):
     return metadata['version']
 
 
+class Build(build_py):
+    """Customized setuptools build command - builds protos on build."""
+    def run(self):
+        protoc_command = ["make", "python"]
+        if subprocess.call(protoc_command) != 0:
+            sys.exit(-1)
+        build_py.run(self)
+
+
 setup(
     name='retinaface',
     version=get_version('retinaface', '__init__.py'),
@@ -35,6 +47,9 @@ setup(
     install_requires=[
         "gdown"
     ],
+    cmdclass={
+            'build': Build,
+        },
     setup_requires=['pytest-runner'],
     python_requires='>=3.6.0'
 )
