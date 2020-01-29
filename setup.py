@@ -26,13 +26,13 @@ def get_version(*args):
     return metadata['version']
 
 
-class Build(build_py):
-    """Customized setuptools build command - builds protos on build."""
-    def run(self):
-        protoc_command = ["make", "python"]
-        if subprocess.call(protoc_command) != 0:
-            sys.exit(-1)
-        build_py.run(self)
+# class Build(build_py):
+#     """Customized setuptools build command - builds protos on build."""
+#     def run(self):
+#         protoc_command = ["make", "python"]
+#         if subprocess.call(protoc_command) != 0:
+#             sys.exit(-1)
+#         build_py.run(self)
 
 
 setup(
@@ -47,9 +47,9 @@ setup(
     install_requires=[
         "gdown"
     ],
-    cmdclass={
-            'build': Build,
-        },
+    # cmdclass={
+    #         'build': Build,
+    #     },
     setup_requires=['pytest-runner'],
     python_requires='>=3.6.0'
 )
